@@ -1,3 +1,5 @@
 inventory = 0
-while inventory != "quit":
-    inventory = input("Enter a stock quantity:")
+stock = 0
+while stock != "quit":
+    stock = input("Enter a stock quantity:")
+    stock = int(stock)
