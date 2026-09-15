@@ -1,7 +1,7 @@
 inventory = 0
 stock = 0
 
-while stock != "quit":
+while stock != "quit" and inventory < 500:
     stock = input("Enter a stock quantity:")
     if stock == "quit":
         print("Exiting program.")
@@ -16,3 +16,7 @@ while stock != "quit":
             inventory += stock
             print("The current inventory is at " + str(inventory))
     print("----------------------------------------------")
+
+
+if inventory > 500:
+    print("The current inventory is overstocked. Exiting program.")
