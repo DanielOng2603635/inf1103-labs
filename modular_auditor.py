@@ -39,6 +39,12 @@ def process_delivery(current_total, new_value):
 def calculate_tax(amount):
     return amount/10
 
+def generate_report(total_units, failed_attempts):
+    print("----------------------------------------------")
+    print("Total Units Processed: " + str(total_units))
+    print("Total Failed Entries: " + str(failed_attempts))
+    print("----------------------------------------------")
+
 while stock != "quit":
     stock = get_valid_input()
     # Add to inventory
@@ -47,8 +53,9 @@ while stock != "quit":
         processed += 1
         tax = calculate_tax(stock)
         print("The tax is " + str(tax))
+        print("The current inventory is at " + str(inventory))
     else:
         failed += 1
     print("----------------------------------------------")
 
-
+generate_report(processed,failed)
