@@ -1,3 +1,5 @@
+# Github at https://github.com/DanielOng2603635/inf1103-labs
+
 # Initalizing inventory and stock
 inventory = 0
 stock = 0
@@ -37,6 +39,7 @@ while stock != "quit" and inventory < 500:
 # Overstocked case
 if inventory > 500:
     print("The current inventory is overstocked. Exiting program.")
+
 # Normal quit case
 else:
     print("Total Units Processed: " + str(processed))
