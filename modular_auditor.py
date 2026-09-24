@@ -36,13 +36,19 @@ def get_valid_input():
 def process_delivery(current_total, new_value):
     return current_total + new_value
 
+def calculate_tax(amount):
+    return amount/10
+
 while stock != "quit":
     stock = get_valid_input()
     # Add to inventory
     if isinstance(stock,int) == True:
         inventory = process_delivery(inventory,stock)
         processed += 1
+        tax = calculate_tax(stock)
+        print("The tax is " + str(tax))
     else:
         failed += 1
     print("----------------------------------------------")
+
 
