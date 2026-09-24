@@ -33,10 +33,14 @@ def get_valid_input():
             # Add to inventory
             return stock
 
+def process_delivery(current_total, new_value):
+    return current_total + new_value
+
 while stock != "quit":
     stock = get_valid_input()
     # Add to inventory
     if isinstance(stock,int) == True:
+        inventory = process_delivery(inventory,stock)
         processed += 1
     else:
         failed += 1
