@@ -1,0 +1,6 @@
+1001,Wireless Mouse,2
+1002,Keyboard,3
+1003,USB Cable,5
+1004,Laptop Stand,2
+1005,Apple,5
+1006,Test,10

@@ -2,6 +2,6 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY auditor.py .
+COPY persistent_auditor.py .
 
-cmd ["python", "auditor.py"]
+cmd ["python", "persistent_auditor.py"]
