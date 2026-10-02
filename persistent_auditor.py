@@ -1,4 +1,3 @@
-
 # Github at https://github.com/DanielOng2603635/inf1103-labs
 
 FILENAME = "inventory.txt"
@@ -27,6 +26,16 @@ def load_inventory():
     except FileNotFoundError:
         print("No inventory file found. Starting with an empty inventory.")
         return 0, []
+
+def save_inventory(total, history):
+    # Write the final total on line 1 and the history on line 2.
+    with open(FILENAME, "w") as file:
+        file.write(str(total) + "\n")
+        history_text = []
+        for value in history:
+            history_text.append(str(value))
+        file.write(",".join(history_text) + "\n")
+    print("Inventory successfully saved to " + FILENAME)
 
 def get_valid_input():
     stock = input("Enter a stock quantity:")
@@ -81,3 +90,8 @@ while stock != "quit":
     print("----------------------------------------------")
 
 generate_report(processed, failed)
+
+# Write-back: save the final total and history when the user quits
+save_inventory(inventory, history)
+print("Final inventory: " + str(inventory))
+print("Transaction history: " + str(history))
