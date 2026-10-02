@@ -1,3 +1,4 @@
+
 # Github at https://github.com/DanielOng2603635/inf1103-labs
 
 FILENAME = "inventory.txt"
@@ -8,19 +9,24 @@ processed = 0
 failed = 0
 
 def load_inventory():
-    # Read the saved total from the inventory file.
+    # Read the saved total (line 1) and history (line 2) from the file.
     # If the file does not exist, start with an empty inventory.
     try:
         with open(FILENAME, "r") as file:
             lines = file.read().splitlines()
         total = 0
+        history = []
         if len(lines) > 0 and lines[0].strip() != "":
             total = int(lines[0])
+        if len(lines) > 1 and lines[1].strip() != "":
+            for value in lines[1].split(","):
+                history.append(int(value))
         print("Loaded saved inventory: " + str(total))
-        return total
+        print("Loaded transaction history: " + str(history))
+        return total, history
     except FileNotFoundError:
         print("No inventory file found. Starting with an empty inventory.")
-        return 0
+        return 0, []
 
 def get_valid_input():
     stock = input("Enter a stock quantity:")
@@ -56,18 +62,20 @@ def generate_report(total_units, failed_attempts):
     print("Total Failed Entries: " + str(failed_attempts))
     print("----------------------------------------------")
 
-# Load the previous inventory at the start of the program
-inventory = load_inventory()
+# Load the previous inventory and history at the start of the program
+inventory, history = load_inventory()
 print("----------------------------------------------")
 
 while stock != "quit":
     stock = get_valid_input()
     if isinstance(stock, int) == True:
         inventory = process_delivery(inventory, stock)
+        history.append(stock)          # record every valid transaction
         processed += 1
         tax = calculate_tax(stock)
         print("The tax is " + str(tax))
         print("The current inventory is at " + str(inventory))
+        print("Transaction history: " + str(history))
     elif stock == "error":
         failed += 1
     print("----------------------------------------------")
