@@ -1,4 +1,5 @@
 # Github at https://github.com/DanielOng2603635/inf1103-labs
+
 import json
 import os
 
@@ -19,6 +20,11 @@ def load_inventory():
     else:
         print(FILENAME + " not found. Starting with an empty inventory.")
         return []
+
+
+def save_inventory(inventory):
+    with open(FILENAME, "w") as file:
+        json.dump(inventory, file, indent=4)
 
 
 def show_menu():
@@ -182,8 +188,14 @@ while True:
     elif option == "4":
         handle_search(inventory)
     elif option == "5":
-        print("Save feature not available yet.")
+        print("Saving inventory...")
+        save_inventory(inventory)
+        print("Inventory saved successfully to " + FILENAME + ".")
     elif option == "6":
+        # Final save when the user exits
+        print("Saving inventory before exit...")
+        save_inventory(inventory)
+        print("Inventory saved successfully.")
         print("Thank you for using Inventory Management System.")
         print("Program terminated.")
         break
