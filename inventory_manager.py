@@ -1,4 +1,25 @@
 # Github at https://github.com/DanielOng2603635/inf1103-labs
+import json
+import os
+
+FILENAME = "inventory.json"
+
+
+def load_inventory():
+    if os.path.exists(FILENAME):
+        print(FILENAME + " found.")
+        try:
+            with open(FILENAME, "r") as file:
+                inventory = json.load(file)
+            print("Inventory loaded successfully.")
+            return inventory
+        except json.JSONDecodeError:
+            print("Inventory file is damaged. Starting with an empty inventory.")
+            return []
+    else:
+        print(FILENAME + " not found. Starting with an empty inventory.")
+        return []
+
 
 def show_menu():
     print("----------- MENU -----------")
@@ -146,13 +167,7 @@ print("========================================")
 print("INVENTORY MANAGEMENT SYSTEM")
 print("========================================")
 
-# Putting in placeholder inventory
-inventory = [
-    {"id": "P001", "name": "Laptop", "price": 1200.00, "stock": 15},
-    {"id": "P002", "name": "Mouse", "price": 25.50, "stock": 40},
-    {"id": "P003", "name": "Keyboard", "price": 45.00, "stock": 25}
-]
-
+inventory = load_inventory()
 show_menu()
 
 while True:
