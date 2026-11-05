@@ -1,8 +1,11 @@
 # Github at https://github.com/DanielOng2603635/inf1103-labs
 
+from abc import ABC, abstractmethod
 
-class Product:
-    # A single product in the store
+
+class Product(ABC):
+    # Abstract base class for every product in the store.
+    # Cannot be created directly: use PhysicalProduct or DigitalProduct.
 
     def __init__(self, product_id, name, price, stock):
         self.__product_id = str(product_id)
@@ -44,7 +47,13 @@ class Product:
         self.__stock = quantity
 
     def display_information(self):
+        # Common information. Subclasses call this with super() and add their own details.
         print("ID: " + self.__product_id
               + " | Name: " + self.__name
               + " | Price: $" + format(self.__price, ".2f")
               + " | Stock: " + str(self.__stock))
+
+    @abstractmethod
+    def get_fulfilment_info(self):
+        # Every product type must say how it gets to the customer
+        pass
