@@ -1,46 +1,12 @@
 # Github at https://github.com/DanielOng2603635/inf1103-labs
 #
 # File Handling: loads and saves inventory data.
-# Each saved product has a "type" ("physical" or "digital") so the right
-# subclass can be created again when the file is loaded.
 
 import json
 import os
 
 from physical_product import PhysicalProduct
 from digital_product import DigitalProduct
-
-
-def create_product(item):
-    # Use the saved type to rebuild the right subclass
-    if item["type"] == "physical":
-        return PhysicalProduct(item["id"], item["name"], item["price"],
-                               item["stock"], item["weight"])
-    if item["type"] == "digital":
-        return DigitalProduct(item["id"], item["name"], item["price"],
-                              item["stock"], item["download_size"])
-    raise ValueError("Unknown product type: " + str(item["type"]))
-
-
-def product_to_dict(product):
-    # Turn a product object into a dictionary JSON can store
-    data = {
-        "type": "",
-        "id": product.get_product_id(),
-        "name": product.get_name(),
-        "price": product.get_price(),
-        "stock": product.get_stock()
-    }
-    # Add the type identifier and the attribute only that subclass has
-    if isinstance(product, PhysicalProduct):
-        data["type"] = "physical"
-        data["weight"] = product.get_weight()
-    elif isinstance(product, DigitalProduct):
-        data["type"] = "digital"
-        data["download_size"] = product.get_download_size()
-    else:
-        raise ValueError("Don't know how to save this product type.")
-    return data
 
 
 def load_inventory(inventory, filename):
@@ -63,8 +29,15 @@ def load_inventory(inventory, filename):
 
     for item in data:
         # Turn each saved dictionary back into a product object
+        # the type decides which class to use
         try:
-            product = create_product(item)
+            if item["type"] == "physical":
+                product = PhysicalProduct(item["id"], item["name"], item["price"], item["stock"], item["weight"])
+            elif item["type"] == "digital":
+                product = DigitalProduct(item["id"], item["name"], item["price"], item["stock"], item["download_size"])
+            else:
+                print("Skipping a product with an unknown type.")
+                continue
         except (KeyError, TypeError, ValueError):
             print("Skipping an invalid product entry in " + filename + ".")
             continue
@@ -79,7 +52,21 @@ def save_inventory(inventory, filename):
     # Write every product in the inventory to a JSON file
     data = []
     for product in inventory.get_products():
-        data.append(product_to_dict(product))
+        # Turn each product object into a dictionary JSON can store
+        item = {
+            "id": product.get_product_id(),
+            "name": product.get_name(),
+            "price": product.get_price(),
+            "stock": product.get_stock()
+        }
+        # Save the type and the extra info for that type
+        if isinstance(product, PhysicalProduct):
+            item["type"] = "physical"
+            item["weight"] = product.get_weight()
+        else:
+            item["type"] = "digital"
+            item["download_size"] = product.get_download_size()
+        data.append(item)
 
     with open(filename, "w") as file:
         json.dump(data, file, indent=4)

@@ -1,8 +1,6 @@
 # Github at https://github.com/DanielOng2603635/inf1103-labs
 # Main Program
 
-import math
-
 from physical_product import PhysicalProduct
 from digital_product import DigitalProduct
 from inventory import Inventory
@@ -22,18 +20,17 @@ def show_menu():
     print("----------------------------")
 
 
-def get_positive_number(prompt, field_name):
-    # Used for price, weight and download size
-    value = input(prompt).strip()
+def get_valid_price(prompt):
+    price = input(prompt).strip()
     try:
-        value = float(value)
+        price = float(price)
     except ValueError:
-        print("Please enter a valid number for " + field_name + ".")
+        print("Please enter a valid number for price.")
         return None
-    if not math.isfinite(value) or value <= 0:
-        print(field_name.capitalize() + " must be a positive number.")
+    if price <= 0:
+        print("Price must be a positive number.")
         return None
-    return value
+    return price
 
 
 def get_valid_stock(prompt):
@@ -51,13 +48,25 @@ def get_valid_stock(prompt):
     return stock
 
 
+def get_valid_number(prompt):
+    # For weight and download size
+    number = input(prompt).strip()
+    try:
+        number = float(number)
+    except ValueError:
+        print("Please enter a valid number.")
+        return None
+    if number <= 0:
+        print("Number must be more than 0.")
+        return None
+    return number
+
+
 def handle_add(inventory):
     print("Add New Product")
-    print("1. Physical Product")
-    print("2. Digital Product")
-    product_type = input("Choose product type: ").strip()
-    if product_type not in ("1", "2"):
-        print("Invalid product type. Please enter 1 or 2.")
+    product_type = input("Product Type (1 = Physical, 2 = Digital): ").strip()
+    if product_type != "1" and product_type != "2":
+        print("Invalid product type.")
         return
 
     product_id = input("Product ID: ").strip().upper()
@@ -73,7 +82,7 @@ def handle_add(inventory):
         print("Product name cannot be empty.")
         return
 
-    price = get_positive_number("Price: ", "price")
+    price = get_valid_price("Price: ")
     if price is None:
         return
 
@@ -81,19 +90,18 @@ def handle_add(inventory):
     if stock is None:
         return
 
-    # Ask for the extra detail that only this product type has
+    # Create the right type of product and hand it to the Inventory to store
     if product_type == "1":
-        weight = get_positive_number("Weight (kg): ", "weight")
+        weight = get_valid_number("Weight (kg): ")
         if weight is None:
             return
         product = PhysicalProduct(product_id, name, price, stock, weight)
     else:
-        download_size = get_positive_number("Download Size (MB): ", "download size")
+        download_size = get_valid_number("Download Size (MB): ")
         if download_size is None:
             return
         product = DigitalProduct(product_id, name, price, stock, download_size)
 
-    # Hand the new product to the Inventory to store
     inventory.add_product(product)
     print("Product added successfully!")
 
@@ -130,8 +138,7 @@ def handle_search(inventory):
     print("Product Found")
     print("------------------------------------------------")
     product.display_information()
-    # Each subclass gives its own answer (method overriding)
-    print("    Fulfilment: " + product.get_fulfilment_info())
+    print(product.get_fulfilment_info())
     print("------------------------------------------------")
 
 

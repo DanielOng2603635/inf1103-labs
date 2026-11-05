@@ -4,10 +4,8 @@ from abc import ABC, abstractmethod
 
 
 class CanBeShipped(ABC):
-    # Interface: any class that can be shipped must implement these methods.
-    # No attributes or shipping details here, it is only the contract.
+    # Interface for anything that can be shipped
 
     @abstractmethod
     def calculate_shipping_cost(self):
-        # Return the cost of shipping this item
         pass

@@ -4,8 +4,7 @@ from abc import ABC, abstractmethod
 
 
 class Product(ABC):
-    # Abstract base class for every product in the store.
-    # Cannot be created directly: use PhysicalProduct or DigitalProduct.
+    # Base class for all products, can't be created on its own
 
     def __init__(self, product_id, name, price, stock):
         self.__product_id = str(product_id)
@@ -16,12 +15,11 @@ class Product(ABC):
             raise ValueError("Price must be a positive number.")
         self.__price = price
 
-        # Stock goes through update_stock() so the same rules apply
-        # when a product is created as when its stock is changed later.
+        # use update_stock() so the stock gets checked too
         self.__stock = 0
         self.update_stock(stock)
 
-    # ---------- Getters (read-only access to the private attributes) ----------
+    # Getters
 
     def get_product_id(self):
         return self.__product_id
@@ -35,8 +33,6 @@ class Product(ABC):
     def get_stock(self):
         return self.__stock
 
-    # ---------- Behaviour ----------
-
     def update_stock(self, quantity):
         # Set the stock to a new quantity
 
@@ -47,7 +43,6 @@ class Product(ABC):
         self.__stock = quantity
 
     def display_information(self):
-        # Common information. Subclasses call this with super() and add their own details.
         print("ID: " + self.__product_id
               + " | Name: " + self.__name
               + " | Price: $" + format(self.__price, ".2f")
@@ -55,5 +50,4 @@ class Product(ABC):
 
     @abstractmethod
     def get_fulfilment_info(self):
-        # Every product type must say how it gets to the customer
         pass
